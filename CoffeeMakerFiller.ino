@@ -51,9 +51,8 @@ void loop() {
         machineState =0;
         digitalWrite(valve,LOW);
       }
+      break;
   }
-
-
 }
 
 void clickDetected() {
