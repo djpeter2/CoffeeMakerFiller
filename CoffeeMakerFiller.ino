@@ -1,37 +1,47 @@
-
-const byte meter = 2;
-const byte button = 9;
-const byte valve = 6;
+int meter = 0;
+int button = 10;
+int valve = 6;
 unsigned long clickCount = 0;
 unsigned long debounceDelay = 50;
 unsigned long lastDebounceTime = 0;
-int lastButtonState = 1;
-int buttonState = 1;
-unsigned long clickGoal = 40000;
+int lastButtonState = 0;
+int buttonState;
+unsigned long clickGoal = 100000;
 bool buttonPressed = false;
 int machineState = 0; // 0 = IDLE
+int ledState = LOW;
 
 void setup() {
-  // put your setup code here, to run once:
-  pinMode(button,INPUT_PULLUP);
+
+  //Serial.begin(9600);
+  pinMode(10,INPUT_PULLUP);
   pinMode(meter,INPUT_PULLUP);
+  pinMode(13,OUTPUT);
+  digitalWrite(13,LOW);
   pinMode(valve,OUTPUT);
   digitalWrite(valve,LOW);
-  attachInterrupt(digitalPinToInterrupt(meter), clickDetected, RISING);
+  attachInterrupt(digitalPinToInterrupt(meter), clickDetected, FALLING);
 }
 
 void loop() {
-  // debounce button:
-  int buttonReading = digitalRead(button);
-  if (buttonReading != lastButtonState){
+
+  int reading = digitalRead(10);
+  if (reading != lastButtonState){
     lastDebounceTime = millis();
   }
+  
   if ((millis() - lastDebounceTime) > debounceDelay) {
-    if (buttonReading != buttonState){
-      buttonState = buttonReading;
-      if (buttonState = LOW) buttonPressed = true;
+    
+    if (reading != buttonState){
+      buttonState = reading;
+      if (buttonState == LOW){
+        buttonPressed = true;
+      }
     }
   }
+  
+  lastButtonState = reading;
+  
   switch (machineState){
     case 0:
       if (buttonPressed){
@@ -46,15 +56,20 @@ void loop() {
         buttonPressed = false;
         machineState = 0;
         digitalWrite(valve,LOW);
+        
       }
       if (clickCount >= clickGoal) {
         machineState =0;
         digitalWrite(valve,LOW);
+        
       }
       break;
   }
+  
 }
 
 void clickDetected() {
   clickCount++;
+  ledState = !ledState;
+  digitalWrite(13,ledState);
 }
