@@ -6,7 +6,7 @@ unsigned long debounceDelay = 50;
 unsigned long lastDebounceTime = 0;
 int lastButtonState = 0;
 int buttonState;
-unsigned long clickGoal = 100000;
+unsigned long clickGoal = 4000; //2100clicks/4cups
 bool buttonPressed = false;
 int machineState = 0; // 0 = IDLE
 int ledState = LOW;
@@ -60,6 +60,7 @@ void loop() {
       }
       if (clickCount >= clickGoal) {
         machineState =0;
+        clickCount = 0;
         digitalWrite(valve,LOW);
         
       }
