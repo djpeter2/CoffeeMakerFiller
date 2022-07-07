@@ -6,7 +6,7 @@ unsigned long debounceDelay = 50;
 unsigned long lastDebounceTime = 0;
 int lastButtonState = 0;
 int buttonState = 1;
-unsigned long clickGoal = 3800; //2100clicks/4cups
+unsigned long clickGoal = 3900; //2100clicks/4cups
 bool buttonPressed = false;
 int machineState = 0; // 0 = IDLE
 int ledState = LOW;
@@ -47,6 +47,7 @@ void loop() {
   
   switch (machineState){
     case 0:
+      delay(10);
       if (buttonPressed){
         buttonPressed = false;
         machineState = 1;
@@ -54,7 +55,6 @@ void loop() {
         watchDogTimer = millis();
         digitalWrite(valve,HIGH);
       }
-      delay(10);
       break;
     
     case 1:
