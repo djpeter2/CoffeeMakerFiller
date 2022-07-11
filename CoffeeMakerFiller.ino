@@ -1,16 +1,16 @@
 #define meter 0
 #define button 10
 #define valve 6
+#define led 9
 
 unsigned long clickCount = 0;
-unsigned long debounceDelay = 50;
+unsigned long debounceDelay = 75;
 unsigned long lastDebounceTime = 0;
 int lastButtonState = 0;
 int buttonState = 1;
-unsigned long clickGoal = 4000; //2100clicks/4cups
+unsigned long clickGoal = 3850; //2100clicks/4cups
 bool buttonPressed = false;
 int machineState = 0; // 0 = IDLE
-int ledState = LOW;
 
 //watchdog
 int watchDogLength = 1000;
@@ -22,8 +22,8 @@ void setup() {
   //Serial.begin(9600);
   pinMode(button,INPUT_PULLUP);
   pinMode(meter,INPUT_PULLUP);
-  pinMode(13,OUTPUT);
-  digitalWrite(13,LOW);
+  pinMode(led,OUTPUT);
+  digitalWrite(led,LOW);
   pinMode(valve,OUTPUT);
   digitalWrite(valve,LOW);
   attachInterrupt(digitalPinToInterrupt(meter), clickDetected, FALLING);
