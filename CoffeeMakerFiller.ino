@@ -1,12 +1,13 @@
 #define meter 0
 #define button 10
 #define valve 6
+
 unsigned long clickCount = 0;
 unsigned long debounceDelay = 50;
 unsigned long lastDebounceTime = 0;
 int lastButtonState = 0;
 int buttonState = 1;
-unsigned long clickGoal = 3900; //2100clicks/4cups
+unsigned long clickGoal = 4000; //2100clicks/4cups
 bool buttonPressed = false;
 int machineState = 0; // 0 = IDLE
 int ledState = LOW;
@@ -54,6 +55,7 @@ void loop() {
         clickCount = 0;
         watchDogTimer = millis();
         digitalWrite(valve,HIGH);
+        digitalWrite(led,HIGH);
       }
       break;
     
@@ -63,20 +65,25 @@ void loop() {
         machineState = 0;
         clickCount = 0;
         digitalWrite(valve,LOW);
+        digitalWrite(led,LOW);
+        break;
       }
       else if (clickCount >= clickGoal) {
-        machineState =0;
+        machineState = 0;
         clickCount = 0;
         digitalWrite(valve,LOW);
+        digitalWrite(led,LOW);
+        break;
       }
       if (clickCount != prevClickCount){
         watchDogTimer = millis();
       }
       else if (millis() - watchDogTimer > watchDogLength){
         //no clicks longer than watchDogLength
-        machineState =0;
+        machineState = 0;
         clickCount = 0;
         digitalWrite(valve,LOW);
+        digitalWrite(led,LOW);
       }
       prevClickCount = clickCount;
       break;
