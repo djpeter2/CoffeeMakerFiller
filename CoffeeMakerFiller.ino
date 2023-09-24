@@ -1,14 +1,20 @@
 #include <TM74HC595Display.h>
 
 #define meter 0
-#define valve 6
-#define fullSwitch 7
-#define emptySwitch 8
+#define valve 18
+#define fullSwitch 13
+#define emptySwitch 12
 
 //rotary encoder
-#define CLK 3
-#define DT 4
+#define CLK 2
+#define DT 3
 #define SW 5
+
+//LED segment display
+#define SCLK 6 
+#define RCLK 9
+#define DIO 10
+
 int thisState = 0;
 int oldState = 0;
 int knobPosition = 0;
@@ -33,10 +39,7 @@ int cupGoal = 12;
 
 bool buttonPressed = false;
 int machineState = 0; // 0 = IDLE
-//LED
-int SCLK = 6;
-int RCLK = 7;
-int DIO = 8;
+
 /**
 bit - segment
 1   - decimal point
